@@ -1,5 +1,6 @@
 #include "crow_all.h"
 #include <iostream>
+//g++ -o backend controller.cpp -I/opt/homebrew/Cellar/asio/1.30.2/include/ -std=c++17 -pthread
 
 int main() {
     crow::App<crow::CORSHandler> app;
