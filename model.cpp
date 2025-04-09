@@ -54,26 +54,30 @@ vector<vector<std::string>> convertTo2DVector(RowResult& result) {
 void displayTable(vector<vector<std::string>> data){
     for (const auto& row : data) {
         for (const auto& val : row) {
-            cout << val << "\t";
+            cout << val << "    ";
         }
         cout << endl;
     }
+    cout << endl;
 };
 int main() {
     try {
         // Connect to MySQL Server with X Protocol
         Session session("localhost", 33060, "root", "teNma!511");
         cout << " Connected to MySQL using X DevAPI!" << endl;
-        auto result=session.sql("SELECT * FROM skyfleet.flight").execute();
-        auto result=session.sql("SELECT * FROM skyfleet.flight").execute();
-        auto result=session.sql("SELECT * FROM skyfleet.flight").execute();
-        auto result=session.sql("SELECT * FROM skyfleet.flight").execute();
+        auto result1=session.sql("SELECT * FROM skyfleet.flight").execute();
+        auto result2=session.sql("SELECT * FROM skyfleet.crew").execute();
+        auto result3=session.sql("SELECT * FROM skyfleet.person").execute();
         //RowResult result = flightTable.select("*").execute();
-        vector<vector<std::string>> flightData = convertTo2DVector(result);
+        vector<vector<std::string>> data1 = convertTo2DVector(result1);
+        vector<vector<std::string>> data2 = convertTo2DVector(result2);
+        vector<vector<std::string>> data3 = convertTo2DVector(result3);
        
 
         // Print the 2D vector
-        displayTable(flightData);
+        displayTable(data1);
+        displayTable(data2);
+        displayTable(data3);
 
 
     
