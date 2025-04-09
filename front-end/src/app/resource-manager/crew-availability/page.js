@@ -1,18 +1,17 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-
-// Dummy data for crew
-const initialCrew = [
-  { id: 1, name: "a", role: "Pilot", status: "Standby" },
-  { id: 2, name: "b", role: "Co-Pilot", status: "Off-Duty" },
-  { id: 3, name: "c", role: "Flight Attendant", status: "Assigned" },
-  { id: 4, name: "d", role: "Engineer", status: "Standby" },
-  { id: 5, name: "e", role: "Flight Attendant", status: "Off-Duty" },
-];
+import { useState, useEffect } from 'react';
 
 export default function ResourceManagerCrew() {
-  const [crew, setCrew] = useState(initialCrew);
+  const [crew, setCrew] = useState([]);
+
+  // Fetch crew data from a JSON file
+  useEffect(() => {
+    fetch('/crewDetails.json')
+      .then((response) => response.json())
+      .then((data) => setCrew(data.crew))
+      .catch((error) => console.error('Error fetching crew details:', error));
+  }, []);
 
   // Function to toggle status between "Off-Duty" and "Standby"
   const toggleStatus = (id) => {
@@ -68,7 +67,7 @@ export default function ResourceManagerCrew() {
                   onClick={() => toggleStatus(member.id)}
                   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                  Toggle to {member.status === "Standby" ? "Off-Duty" : "Standby"}
+                  {member.status === "Standby" ? "Off-Duty" : "Standby"}
                 </button>
               )}
             </div>

@@ -1,18 +1,17 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-
-// Dummy data for aircrafts
-const initialAircrafts = [
-  { id: 1, model: "Boeing 737", status: "Operational", location: "Gate A1" },
-  { id: 2, model: "Airbus A320", status: "Under Maintenance", location: "Hangar 3" },
-  { id: 3, model: "Cessna 172", status: "Maintenance", location: "Runway R2" },
-  { id: 4, model: "Boeing 747", status: "Operational", location: "Gate B2" },
-  { id: 5, model: "Embraer E190", status: "Under Maintenance", location: "Hangar 1" },
-];
+import { useState, useEffect } from 'react';
 
 export default function ResourceManagerAircraftMaintenance() {
-  const [aircrafts, setAircrafts] = useState(initialAircrafts);
+  const [aircrafts, setAircrafts] = useState([]);
+
+  // Fetch aircraft data from a JSON file
+  useEffect(() => {
+    fetch('/aircraftDetails.json')
+      .then((response) => response.json())
+      .then((data) => setAircrafts(data.aircrafts))
+      .catch((error) => console.error('Error fetching aircraft details:', error));
+  }, []);
 
   // Function to toggle status between "Operational" and "Under Maintenance"
   const toggleStatus = (id) => {
@@ -68,7 +67,7 @@ export default function ResourceManagerAircraftMaintenance() {
                   onClick={() => toggleStatus(aircraft.id)}
                   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                  Toggle to {aircraft.status === "Operational" ? "Under Maintenance" : "Operational"}
+                  {aircraft.status === "Operational" ? "Under Maintenance" : "Operational"}
                 </button>
               )}
             </div>

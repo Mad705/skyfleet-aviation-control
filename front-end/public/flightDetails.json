@@ -1,0 +1,30 @@
+{
+    "gates": {
+      "G2": {
+        "flightId": "FL123",
+        "airline": "SkyFleet Airlines",
+        "destination": "New York",
+        "departureTime": "2025-04-08T14:30:00Z"
+      },
+      "G4": {
+        "flightId": "FL456",
+        "airline": "AirJet",
+        "destination": "London",
+        "departureTime": "2025-04-08T16:00:00Z"
+      }
+    },
+    "runways": {
+      "R2": {
+        "flightId": "FL789",
+        "airline": "SkyFleet Airlines",
+        "destination": "Tokyo",
+        "departureTime": "2025-04-08T18:00:00Z"
+      },
+      "R5": {
+        "flightId": "FL101",
+        "airline": "AirJet",
+        "destination": "Paris",
+        "departureTime": "2025-04-08T20:00:00Z"
+      }
+    }
+  }

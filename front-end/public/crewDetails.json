@@ -1,0 +1,9 @@
+{
+    "crew": [
+      { "id": 1, "name": "A", "role": "Pilot", "status": "Standby" },
+      { "id": 2, "name": "B", "role": "Co-Pilot", "status": "Off-Duty" },
+      { "id": 3, "name": "C", "role": "Flight Attendant", "status": "Assigned" },
+      { "id": 4, "name": "D", "role": "Engineer", "status": "Standby" },
+      { "id": 5, "name": "E", "role": "Flight Attendant", "status": "Off-Duty" }
+    ]
+  }
