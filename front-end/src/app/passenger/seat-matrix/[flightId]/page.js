@@ -108,7 +108,7 @@ export default function SeatMatrixPage() {
         </div>
       )}
 
-      <div className="bg-white p-6 rounded-lg shadow-md w-fit mx-auto border border-gray-300 flex flex-col gap-3">
+      <div className="bg-white p-6 rounded-4xl shadow-md w-fit mx-auto border border-gray-300 flex flex-col gap-3">
         {seatMatrix.map((row, rowIdx) => (
           <div key={rowIdx} className="flex justify-center gap-6">
             {/* Left side */}
@@ -123,7 +123,7 @@ export default function SeatMatrixPage() {
                   <div
                     key={seat.seatNumber}
                     onClick={() => handleSeatClick(rowIdx, seatIdx)}
-                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-14 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
+                    className={`p-2 border rounded-4xl shadow-md text-sm w-25 h-16 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
                       seat.passenger
                         ? 'bg-gray-400 cursor-not-allowed text-white'
                         : isSelected
@@ -157,7 +157,7 @@ export default function SeatMatrixPage() {
                   <div
                     key={seat.seatNumber}
                     onClick={() => handleSeatClick(rowIdx, trueSeatIdx)}
-                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-14 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
+                    className={`p-2 border rounded-4xl shadow-md text-sm w-25 h-16 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
                       seat.passenger
                         ? 'bg-gray-400 cursor-not-allowed text-white'
                         : isSelected
