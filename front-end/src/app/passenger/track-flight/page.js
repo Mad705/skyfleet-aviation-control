@@ -73,7 +73,7 @@ const TrackFlightPage = () => {
       </nav>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="min-h-screen mx-auto p-6">
         <h2 className="text-2xl font-semibold mb-6">Track Your Flights</h2>
 
         {flights.length === 0 && (
@@ -105,7 +105,7 @@ const TrackFlightPage = () => {
                           index < currentIndex
                             ? 'bg-green-500'
                             : index === currentIndex
-                            ? 'bg-yellow-400'
+                            ? 'bg-blue-400'
                             : 'bg-gray-300'
                         }`}
                       ></div>
