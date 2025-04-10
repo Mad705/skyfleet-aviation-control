@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation'; // ✅ Add this
-
 
 // Sample static flight data
 const flightsData = [
@@ -40,7 +38,6 @@ export default function PassengerManagerDashboard() {
         <h1 className="text-xl font-bold">Passenger</h1>
         <div className="space-x-20">
           <Link href="/passenger/dashboard" className="hover:underline">Dashboard</Link>
-          <Link href="/passenger/book-flights" className="hover:underline">Book Flight</Link>
           <Link href="/passenger/track-flight" className="hover:underline">Track Flight</Link>
           <Link href="/passenger/track-baggage" className="hover:underline">Track baggage</Link>
           <Link href="/passenger/register-baggage" className="hover:underline">Register Baggage</Link>
@@ -59,7 +56,7 @@ export default function PassengerManagerDashboard() {
             <p><strong>Status:</strong> {flight.status}</p>
 
             <Link
-              href={`/passenger/book-flights?flightId=${flight.id}`}
+              href={`/passenger/seat-matrix/${flight.id}`}
               className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
             >
               Book This Flight
