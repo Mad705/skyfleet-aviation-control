@@ -43,7 +43,7 @@ export default function TrackBaggagePage() {
         </div>
       </nav>
 
-      <div className="pt-20 px-6">
+      <div className="pt-20 px-6 min-h-screen">
         <h2 className="text-2xl font-bold mb-6">Track Baggage</h2>
 
         {data.map((flight) => (

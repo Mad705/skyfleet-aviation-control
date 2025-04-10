@@ -3,6 +3,15 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+const seatPrices = {
+  A: 600,
+  B: 550,
+  C: 500,
+  D: 450,
+  E: 400,
+  F: 350,
+};
+
 const initialSeatMatrix = [
   [
     { seatNumber: 'A1', passenger: null },
@@ -59,13 +68,12 @@ export default function SeatMatrixPage() {
   const router = useRouter();
 
   const [seatMatrix, setSeatMatrix] = useState(initialSeatMatrix);
-  const [selectedSeat, setSelectedSeat] = useState(null); // { rowIdx, seatIdx }
+  const [selectedSeat, setSelectedSeat] = useState(null);
   const [bookingMessage, setBookingMessage] = useState('');
 
   const handleSeatClick = (rowIdx, seatIdx) => {
     const seat = seatMatrix[rowIdx][seatIdx];
     if (seat.passenger) return;
-
     setSelectedSeat({ rowIdx, seatIdx });
   };
 
@@ -115,15 +123,20 @@ export default function SeatMatrixPage() {
                   <div
                     key={seat.seatNumber}
                     onClick={() => handleSeatClick(rowIdx, seatIdx)}
-                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-12 flex items-center justify-center font-semibold text-white cursor-pointer ${
+                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-14 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
                       seat.passenger
-                        ? 'bg-red-500 cursor-not-allowed'
+                        ? 'bg-gray-400 cursor-not-allowed text-white'
                         : isSelected
-                        ? 'bg-blue-500'
-                        : 'bg-green-500 hover:bg-green-600'
+                        ? 'bg-blue-900 text-white'
+                        : 'bg-blue-600 hover:bg-blue-700'
                     }`}
                   >
-                    {seat.seatNumber}
+                    <span>{seat.seatNumber}</span>
+                    {!seat.passenger && (
+                      <span className="text-xs font-normal text-white">
+                        ${seatPrices[seat.seatNumber[0]]}
+                      </span>
+                    )}
                   </div>
                 );
               })}
@@ -144,15 +157,20 @@ export default function SeatMatrixPage() {
                   <div
                     key={seat.seatNumber}
                     onClick={() => handleSeatClick(rowIdx, trueSeatIdx)}
-                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-12 flex items-center justify-center font-semibold text-white cursor-pointer ${
+                    className={`p-2 border rounded-xl shadow-md text-sm w-20 h-14 flex flex-col items-center justify-center font-semibold text-white cursor-pointer ${
                       seat.passenger
-                        ? 'bg-red-500 cursor-not-allowed'
+                        ? 'bg-gray-400 cursor-not-allowed text-white'
                         : isSelected
-                        ? 'bg-blue-500'
-                        : 'bg-green-500 hover:bg-green-600'
+                        ? 'bg-blue-900 text-white'
+                        : 'bg-blue-600 hover:bg-blue-700'
                     }`}
                   >
-                    {seat.seatNumber}
+                    <span>{seat.seatNumber}</span>
+                    {!seat.passenger && (
+                      <span className="text-xs font-normal text-white">
+                        ${seatPrices[seat.seatNumber[0]]}
+                      </span>
+                    )}
                   </div>
                 );
               })}
