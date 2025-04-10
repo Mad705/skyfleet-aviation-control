@@ -5,7 +5,7 @@
 
 using namespace std;
 //g++ -o backend controller.cpp -I/opt/homebrew/Cellar/asio/1.30.2/include/ -std=c++17 -pthread
-
+using namespace crow;
 int main() {
     crow::App<crow::CORSHandler> app;
 
@@ -14,8 +14,8 @@ int main() {
         .origin("*")
         .methods("POST"_method, "GET"_method);
 
-    CROW_ROUTE(app, "/")([]() {
-        return "Welcome to the Crow C++ API!";
+    CROW_ROUTE(app, "/").methods(HTTPMethod::POST)([](const crow::request& req) {
+        auto body = json::load(req.body);
     });
 
     CROW_ROUTE(app, "/api/login").methods(crow::HTTPMethod::POST)([](const crow::request& req) {

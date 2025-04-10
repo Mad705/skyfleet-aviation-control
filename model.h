@@ -19,6 +19,13 @@ int login(std::string username,std::string password , std::string role){
     return 0;
                     
 }
+vector<vector<std::string>>  fetchData(std::string tableName){
+    Session session("localhost", 33060, "root", "teNma!511");
+    std::string query = "SELECT * FROM skyfleet." + tableName;
+
+    auto result = session.sql(query).execute();
+    return convertTo2DVector(result);
+};
 vector<vector<std::string>> convertTo2DVector(RowResult& result) {
     vector<vector<std::string>> tableData;
 
