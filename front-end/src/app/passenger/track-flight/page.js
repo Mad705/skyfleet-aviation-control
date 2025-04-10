@@ -105,7 +105,7 @@ const TrackFlightPage = () => {
                           index < currentIndex
                             ? 'bg-green-500'
                             : index === currentIndex
-                            ? 'bg-blue-400'
+                            ? 'bg-yellow-400'
                             : 'bg-gray-300'
                         }`}
                       ></div>
