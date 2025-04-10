@@ -12,22 +12,42 @@ export default function LoginPage() {
   const [role, setRole] = useState("");
   const router = useRouter();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username || !role) return alert("Please enter username and select a role");
 
-    // Simulate login and redirect based on role
-    switch (role) {
-      case "flightManager":
-        router.push("/flight-manager/dashboard");
-        break;
-      case "resourceManager":
-        router.push("/resource-manager/dashboard");
-        break;
-      case "passenger":
-        router.push("/passenger/dashboard");
-        break;
-      default:
-        alert("Invalid role selected");
+    try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password, role }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        // Save user info to localStorage (or cookie, or global context)
+
+        // Redirect based on role
+        switch (role) {
+          case "flightManager":
+            router.push("/flight-manager/dashboard");
+            break;
+          case "resourceManager":
+            router.push("/resource-manager/dashboard");
+            break;
+          case "passenger":
+            router.push("/passenger/dashboard");
+            break;
+          default:
+            alert("Invalid role selected");
+        }
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error logging in");
     }
   };
 

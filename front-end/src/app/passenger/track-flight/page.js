@@ -73,7 +73,7 @@ const TrackFlightPage = () => {
       </nav>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="min-h-screen mx-auto p-6">
         <h2 className="text-2xl font-semibold mb-6">Track Your Flights</h2>
 
         {flights.length === 0 && (
