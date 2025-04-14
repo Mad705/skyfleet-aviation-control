@@ -20,7 +20,7 @@ export default function ResourceManagerAircraftMaintenance() {
         aircraft.id === id
           ? {
               ...aircraft,
-              status: aircraft.status === "Operational" ? "Under Maintenance" : "Operational",
+              availability: aircraft.availability === "Operational" ? "Under Maintenance" : "Operational",
             }
           : aircraft
       )
@@ -56,20 +56,25 @@ export default function ResourceManagerAircraftMaintenance() {
             <div
               key={aircraft.id}
               className={`p-4 rounded-lg shadow ${
-                aircraft.status === "Maintenance" ? "bg-gray-300" : "bg-white"
+                aircraft.availability === "Under Maintenance" ? "bg-white" : "bg-white"
               }`}
             >
-              <h3 className="text-lg font-semibold">{aircraft.model}</h3>
+              <h3 className="text-lg font-semibold">Aircraft ID: {aircraft.id}</h3>
+              <p className="text-sm text-gray-600">Name: {aircraft.name}</p>
+              <p className="text-sm text-gray-600">Model: {aircraft.model}</p>
+              <p className="text-sm text-gray-600">Capacity: {aircraft.capacity}</p>
+              <p className="text-sm text-gray-600">Availability: {aircraft.availability}</p>
               <p className="text-sm text-gray-600">Location: {aircraft.location}</p>
-              <p className="text-sm text-gray-600">Status: {aircraft.status}</p>
-              {aircraft.status !== "Maintenance" && (
-                <button
-                  onClick={() => toggleStatus(aircraft.id)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  {aircraft.status === "Operational" ? "Under Maintenance" : "Operational"}
-                </button>
-              )}
+              <button
+                onClick={() => toggleStatus(aircraft.id)}
+                className={`mt-4 px-4 py-2 rounded text-white ${
+                  aircraft.availability === "Operational"
+                    ? "bg-blue-500 hover:bg-blue-600"
+                    : "bg-green-500 hover:bg-green-600"
+                }`}
+              >
+                {aircraft.availability === "Operational" ? "Set to Maintenance" : "Maintenance Finished"}
+              </button>
             </div>
           ))}
         </div>

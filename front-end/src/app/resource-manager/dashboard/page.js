@@ -21,7 +21,6 @@ export default function ResourceManagerDashboard() {
   ]);
 
   const [flightDetails, setFlightDetails] = useState({ gates: {}, runways: {} });
-  const [selectedBox, setSelectedBox] = useState(null); 
 
   useEffect(() => {
     fetch('/flightDetails.json')
@@ -45,10 +44,6 @@ export default function ResourceManagerDashboard() {
       })
       .catch((error) => console.error('Error fetching flight details:', error));
   }, []);
-
-  const toggleDetails = (boxId) => {
-    setSelectedBox((prev) => (prev === boxId ? null : boxId)); 
-  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -81,8 +76,7 @@ export default function ResourceManagerDashboard() {
             {gates.map((gate) => (
               <div
                 key={gate.id}
-                className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-4 cursor-pointer"
-                onClick={() => toggleDetails(`gate-${gate.id}`)}
+                className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-4"
               >
                 <h3 className="text-lg font-bold text-blue-800">Gate {gate.gateNumber}</h3>
                 <p>
@@ -99,8 +93,7 @@ export default function ResourceManagerDashboard() {
                     {gate.status}
                   </span>
                 </p>
-                {selectedBox === `gate-${gate.id}` &&
-                  gate.status === 'Occupied' &&
+                {gate.status === 'Occupied' &&
                   flightDetails.gates[gate.gateNumber] && (
                     <div className="mt-2 text-sm text-gray-600">
                       <p>
@@ -130,8 +123,7 @@ export default function ResourceManagerDashboard() {
             {runways.map((runway) => (
               <div
                 key={runway.id}
-                className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-4 cursor-pointer"
-                onClick={() => toggleDetails(`runway-${runway.id}`)}
+                className="bg-white p-4 rounded-lg shadow-md border border-gray-200 mb-4"
               >
                 <h3 className="text-lg font-bold text-blue-800">Runway {runway.runwayNumber}</h3>
                 <p>
@@ -148,8 +140,7 @@ export default function ResourceManagerDashboard() {
                     {runway.status}
                   </span>
                 </p>
-                {selectedBox === `runway-${runway.id}` &&
-                  runway.status === 'Occupied' &&
+                {runway.status === 'Occupied' &&
                   flightDetails.runways[runway.runwayNumber] && (
                     <div className="mt-2 text-sm text-gray-600">
                       <p>

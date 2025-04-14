@@ -1,19 +1,19 @@
 {
   "aircrafts": [
-    { "id": 1, "model": "Boeing 737", "status": "Operational", "location": "Gate A1" },
-    { "id": 2, "model": "Airbus A320", "status": "Under Maintenance", "location": "Hangar 3" },
-    { "id": 3, "model": "Cessna 172", "status": "Operational", "location": "Runway R2" },
-    { "id": 4, "model": "Boeing 747", "status": "Operational", "location": "Gate B2" },
-    { "id": 5, "model": "Embraer E190", "status": "Maintenance", "location": "Hangar 1" },
-    { "id": 6, "model": "Bombardier CRJ700", "status": "Operational", "location": "Gate C3" },
-    { "id": 7, "model": "Boeing 777", "status": "Under Maintenance", "location": "Hangar 2" },
-    { "id": 8, "model": "Airbus A380", "status": "Operational", "location": "Gate D4" },
-    { "id": 9, "model": "Piper PA-28", "status": "Operational", "location": "Runway R1" },
-    { "id": 10, "model": "Boeing 767", "status": "Under Maintenance", "location": "Hangar 4" },
-    { "id": 11, "model": "Gulfstream G650", "status": "Operational", "location": "Gate E5" },
-    { "id": 12, "model": "Boeing 787 Dreamliner", "status": "Operational", "location": "Gate F6" },
-    { "id": 13, "model": "Airbus A350", "status": "Under Maintenance", "location": "Hangar 5" },
-    { "id": 14, "model": "Cessna Citation X", "status": "Operational", "location": "Runway R3" },
-    { "id": 15, "model": "Boeing 757", "status": "Operational", "location": "Gate G7" }
+    { "id": 1, "name": "Boeing 737", "model": "737", "capacity": 180, "availability": "Operational", "location": "Gate A1" },
+    { "id": 2, "name": "Airbus A320", "model": "A320", "capacity": 160, "availability": "Under Maintenance", "location": "Hangar 3" },
+    { "id": 3, "name": "Cessna 172", "model": "172", "capacity": 4, "availability": "Operational", "location": "Runway R2" },
+    { "id": 4, "name": "Boeing 747", "model": "747", "capacity": 416, "availability": "Operational", "location": "Gate B2" },
+    { "id": 5, "name": "Embraer E190", "model": "E190", "capacity": 114, "availability": "Maintenance", "location": "Hangar 1" },
+    { "id": 6, "name": "Bombardier CRJ700", "model": "CRJ700", "capacity": 78, "availability": "Operational", "location": "Gate C3" },
+    { "id": 7, "name": "Boeing 777", "model": "777", "capacity": 396, "availability": "Under Maintenance", "location": "Hangar 2" },
+    { "id": 8, "name": "Airbus A380", "model": "A380", "capacity": 853, "availability": "Operational", "location": "Gate D4" },
+    { "id": 9, "name": "Piper PA-28", "model": "PA-28", "capacity": 4, "availability": "Operational", "location": "Runway R1" },
+    { "id": 10, "name": "Boeing 767", "model": "767", "capacity": 269, "availability": "Under Maintenance", "location": "Hangar 4" },
+    { "id": 11, "name": "Gulfstream G650", "model": "G650", "capacity": 18, "availability": "Operational", "location": "Gate E5" },
+    { "id": 12, "name": "Boeing 787 Dreamliner", "model": "787", "capacity": 296, "availability": "Operational", "location": "Gate F6" },
+    { "id": 13, "name": "Airbus A350", "model": "A350", "capacity": 350, "availability": "Under Maintenance", "location": "Hangar 5" },
+    { "id": 14, "name": "Cessna Citation X", "model": "Citation X", "capacity": 12, "availability": "Operational", "location": "Runway R3" },
+    { "id": 15, "name": "Boeing 757", "model": "757", "capacity": 243, "availability": "Operational", "location": "Gate G7" }
   ]
 }

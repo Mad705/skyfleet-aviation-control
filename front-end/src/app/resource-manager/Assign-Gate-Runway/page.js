@@ -111,20 +111,21 @@ export default function ResourceManagerAssignGateRunway() {
 
   return (
     <div className="min-h-screen bg-yellow-50">
-      <nav className="bg-rose-800 text-white px-6 py-4 shadow-md flex justify-between items-center">
-        <h1 className="text-xl font-bold">🛠️ Resource Manager</h1>
-        <div className="space-x-10">
+      {/* Navbar */}
+      <nav className="bg-red-800 text-white px-6 py-4 shadow-md flex justify-between items-center">
+        <h1 className="text-xl font-bold">Resource Manager</h1>
+        <div className="space-x-20">
           <Link href="/resource-manager/dashboard" className="hover:underline">
             Dashboard
           </Link>
           <Link href="/resource-manager/crew-availability" className="hover:underline">
-            Crew Availability
+            Crew availability
           </Link>
           <Link href="/resource-manager/Aircraft-maintenance" className="hover:underline">
-            Aircraft Maintenance
+            Aircraft maintenance
           </Link>
-          <Link href="/resource-manager/Assign-Gate-Runway" className="underline font-semibold">
-            Assign Gate 🛫
+          <Link href="/resource-manager/Assign-Gate-Runway" className="hover:underline">
+            Assign Gate and Runway
           </Link>
         </div>
       </nav>

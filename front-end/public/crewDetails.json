@@ -1,9 +1,74 @@
 {
-    "crew": [
-      { "id": 1, "name": "A", "role": "Pilot", "status": "Standby" },
-      { "id": 2, "name": "B", "role": "Co-Pilot", "status": "Off-Duty" },
-      { "id": 3, "name": "C", "role": "Flight Attendant", "status": "Assigned" },
-      { "id": 4, "name": "D", "role": "Engineer", "status": "Standby" },
-      { "id": 5, "name": "E", "role": "Flight Attendant", "status": "Off-Duty" }
-    ]
-  }
+  "crew": [
+    {
+      "id": 1,
+      "name": "A",
+      "age": 45,
+      "country": "India",
+      "role": "Pilot",
+      "availability": "Standby",
+      "methods": {
+        "getDetails": "Returns the details of the crew member",
+        "updateAvailability": "Updates the availability status of the crew member",
+        "assignFlight": "Assigns the crew member to a flight",
+        "removeFromFlight": "Removes the crew member from a flight"
+      }
+    },
+    {
+      "id": 2,
+      "name": "B",
+      "age": 38,
+      "country": "USA",
+      "role": "Co-Pilot",
+      "availability": "Off-Duty",
+      "methods": {
+        "getDetails": "Returns the details of the crew member",
+        "updateAvailability": "Updates the availability status of the crew member",
+        "assignFlight": "Assigns the crew member to a flight",
+        "removeFromFlight": "Removes the crew member from a flight"
+      }
+    },
+    {
+      "id": 3,
+      "name": "C",
+      "age": 29,
+      "country": "UK",
+      "role": "Flight Attendant",
+      "availability": "Assigned",
+      "methods": {
+        "getDetails": "Returns the details of the crew member",
+        "updateAvailability": "Updates the availability status of the crew member",
+        "assignFlight": "Assigns the crew member to a flight",
+        "removeFromFlight": "Removes the crew member from a flight"
+      }
+    },
+    {
+      "id": 4,
+      "name": "D",
+      "age": 34,
+      "country": "Canada",
+      "role": "Engineer",
+      "availability": "Standby",
+      "methods": {
+        "getDetails": "Returns the details of the crew member",
+        "updateAvailability": "Updates the availability status of the crew member",
+        "assignFlight": "Assigns the crew member to a flight",
+        "removeFromFlight": "Removes the crew member from a flight"
+      }
+    },
+    {
+      "id": 5,
+      "name": "E",
+      "age": 31,
+      "country": "Australia",
+      "role": "Flight Attendant",
+      "availability": "Off-Duty",
+      "methods": {
+        "getDetails": "Returns the details of the crew member",
+        "updateAvailability": "Updates the availability status of the crew member",
+        "assignFlight": "Assigns the crew member to a flight",
+        "removeFromFlight": "Removes the crew member from a flight"
+      }
+    }
+  ]
+}

@@ -13,14 +13,28 @@ export default function ResourceManagerCrew() {
       .catch((error) => console.error('Error fetching crew details:', error));
   }, []);
 
-  // Function to toggle status between "Off-Duty" and "Standby"
-  const toggleStatus = (id) => {
+  // Function to toggle availability between "Off-Duty" and "Standby"
+  const toggleAvailability = (id) => {
     setCrew((prevCrew) =>
       prevCrew.map((member) =>
         member.id === id
           ? {
               ...member,
-              status: member.status === "Standby" ? "Off-Duty" : "Standby",
+              availability: member.availability === "Standby" ? "Off-Duty" : "Standby",
+            }
+          : member
+      )
+    );
+  };
+
+  // Function to mark duty as finished for "Assigned" crew
+  const finishDuty = (id) => {
+    setCrew((prevCrew) =>
+      prevCrew.map((member) =>
+        member.id === id
+          ? {
+              ...member,
+              availability: "Standby",
             }
           : member
       )
@@ -56,18 +70,29 @@ export default function ResourceManagerCrew() {
             <div
               key={member.id}
               className={`p-4 rounded-lg shadow ${
-                member.status === "Assigned" ? "bg-gray-300" : "bg-white"
+                member.availability === "Assigned" ? "bg-gray-300" : "bg-white"
               }`}
             >
-              <h3 className="text-lg font-semibold">{member.name}</h3>
+              <h3 className="text-lg font-semibold">Name: {member.name}</h3>
+              <p className="text-sm text-gray-600">ID: {member.id}</p>
+              <p className="text-sm text-gray-600">Age: {member.age}</p>
+              <p className="text-sm text-gray-600">Country: {member.country}</p>
               <p className="text-sm text-gray-600">Role: {member.role}</p>
-              <p className="text-sm text-gray-600">Status: {member.status}</p>
-              {member.status !== "Assigned" && (
+              <p className="text-sm text-gray-600">Availability: {member.availability}</p>
+
+              {member.availability === "Assigned" ? (
                 <button
-                  onClick={() => toggleStatus(member.id)}
+                  onClick={() => finishDuty(member.id)}
+                  className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  Duty Finished
+                </button>
+              ) : (
+                <button
+                  onClick={() => toggleAvailability(member.id)}
                   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                  {member.status === "Standby" ? "Off-Duty" : "Standby"}
+                  {member.availability === "Standby" ? "Set to Off-Duty" : "Set to Standby"}
                 </button>
               )}
             </div>
