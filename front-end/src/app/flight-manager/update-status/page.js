@@ -134,7 +134,7 @@ export default function UpdateFlightStatusPage() {
                 {flight.status === 'Scheduled' && (
                   <>
                     <button
-                      className="border-2 bg-red-700 text-white rounded-4xl px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
+                      className=" bg-red-500 text-white rounded-4xl px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
                       onClick={() =>
                         confirmAction(
                           'Are you sure you want to mark this flight as Delayed?',
@@ -145,7 +145,7 @@ export default function UpdateFlightStatusPage() {
                       Mark as Delayed
                     </button>
                     <button
-                      className="border-2 bg-red-700 text-white rounded-4xl px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
+                      className=" bg-red-500 text-white rounded-4xl px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
                       onClick={() =>
                         confirmAction(
                           'Are you sure you want to cancel this flight?',
@@ -161,7 +161,7 @@ export default function UpdateFlightStatusPage() {
                 {statusFlow.includes(flight.status) &&
                   !['Completed', 'Cancelled', 'Delayed', 'Scheduled'].includes(flight.status) && (
                     <button
-                      className="border-2  bg-green-700 rounded-4xl text-white px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
+                      className="border-2  bg-blue-500 rounded-4xl text-white px-3 py-1 font-medium hover:shadow-inner hover:scale-105 transition"
                       onClick={() =>
                         confirmAction(
                           'Confirm advancing this flight to the next operational stage?',

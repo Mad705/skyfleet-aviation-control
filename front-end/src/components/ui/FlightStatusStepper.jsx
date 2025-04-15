@@ -34,10 +34,10 @@ export default function FlightStatusStepper({ currentStatus }) {
           <div key={status} className="flex flex-col items-center text-xs min-w-[100px]">
             <div
               className={clsx(
-                'flex items-center justify-center w-6 h-6 rounded-full border-2',
+                'flex items-center justify-center w-6 h-6 rounded-full ',
                 {
-                  'bg-green-600 text-white border-green-600': isCompleted,
-                  'bg-blue-600 text-white border-blue-600': isCurrent,
+                  'bg-green-500 text-white border-green-600': isCompleted,
+                  'bg-blue-500 text-white border-blue-600': isCurrent,
                   'bg-gray-300 text-gray-700 border-gray-400': !isCompleted && !isCurrent,
                 }
               )}

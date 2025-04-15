@@ -30,10 +30,10 @@ export default function LoginPage() {
 
         // Redirect based on role
         switch (role) {
-          case "flightManager":
+          case "flight-manager":
             router.push("/flight-manager/dashboard");
             break;
-          case "resourceManager":
+          case "resource-manager":
             router.push("/resource-manager/dashboard");
             break;
           case "passenger":
@@ -73,8 +73,8 @@ export default function LoginPage() {
               onChange={(e) => setRole(e.target.value)}
             >
               <option value="">Select Role</option>
-              <option value="flightManager">Flight Manager</option>
-              <option value="resourceManager">Resource Manager</option>
+              <option value="flight-manager">Flight Manager</option>
+              <option value="resource-manager">Resource Manager</option>
               <option value="passenger">Passenger</option>
             </select>
             <Input

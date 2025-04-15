@@ -5,3 +5,4 @@ clang++ controller.cpp -std=c++17 -pthread \
   -L/opt/homebrew/opt/mysql-connector-c++/lib \
   -lmysqlcppconnx \
   -o backend
+./backend

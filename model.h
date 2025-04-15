@@ -16,31 +16,9 @@ int login(std::string username,std::string password , std::string role){
                         .execute();
     if (result.count() > 0) {
         return 1;
-    } 
+    }
     return 0;
                     
-}
-vector<vector<std::string>> fetchData(std::string tableName) {
-    try {
-        // Basic input validation
-        if (tableName.find('\'') != std::string::npos || 
-            tableName.find(';') != std::string::npos) {
-            throw std::invalid_argument("Invalid table name");
-        }
-
-        Session session("localhost", 33060, "root", "teNma!511");
-        std::string query = "SELECT * FROM skyfleet." + tableName;
-
-        auto result = session.sql(query).execute();
-
-        return convertTo2DVector(result);  // assuming this exists
-    } catch (const mysqlx::Error& err) {
-        std::cerr << "MySQL Error: " << err.what() << std::endl;
-    } catch (const std::exception& ex) {
-        std::cerr << "Standard Exception: " << ex.what() << std::endl;
-    } catch (...) {
-        std::cerr << "Unknown error occurred while fetching data." << std::endl;
-    }
 }
 vector<vector<std::string>> convertTo2DVector(RowResult& result) {
     vector<vector<std::string>> tableData;
@@ -82,3 +60,55 @@ vector<vector<std::string>> convertTo2DVector(RowResult& result) {
 
     return tableData;
 }
+vector<vector<std::string>> fetchData(std::string tableName) {
+    vector<vector<std::string>> sample;
+    try {
+        // Basic input validation
+        if (tableName.find('\'') != std::string::npos || 
+            tableName.find(';') != std::string::npos) {
+            throw std::invalid_argument("Invalid table name");
+        }
+
+        Session session("localhost", 33060, "root", "teNma!511");
+        std::string query = "SELECT * FROM skyfleet." + tableName;
+
+        auto result = session.sql(query).execute();
+        
+        return convertTo2DVector(result);  // assuming this exists
+    } catch (const mysqlx::Error& err) {
+        std::cerr << "MySQL Error: " << err.what() << std::endl;
+    } catch (const std::exception& ex) {
+        std::cerr << "Standard Exception: " << ex.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown error occurred while fetching data." << std::endl;
+    }
+    return sample;
+}
+vector<vector<std::string>> fetchcrew() {
+    vector<vector<std::string>> sample;
+    try {
+
+        Session session("localhost", 33060, "root", "teNma!511");
+        std::string query = "SELECT * FROM skyfleet.person join skyfleet.crew on person.person_id=crew.crew_id" ;
+
+        auto result = session.sql(query).execute();
+        
+        return convertTo2DVector(result);  // assuming this exists
+    } catch (const mysqlx::Error& err) {
+        std::cerr << "MySQL Error: " << err.what() << std::endl;
+    } catch (const std::exception& ex) {
+        std::cerr << "Standard Exception: " << ex.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown error occurred while fetching data." << std::endl;
+    }
+    return sample;
+}
+void displayTable(vector<vector<std::string>> data){
+    for (const auto& row : data) {
+        for (const auto& val : row) {
+            cout << val << "    ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+};

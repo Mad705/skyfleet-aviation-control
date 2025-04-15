@@ -145,7 +145,7 @@ export default function SeatMatrixPage() {
                   {/* Left side: seats 0–2 */}
                   <div className="flex gap-2">
                     {row.slice(0, 3).map((seat) => (
-                      <div key={seat.seatNumber} className="bg-blue-100 p-2 border rounded-4xl shadow-xl text-sm w-20 text-center">
+                      <div key={seat.seatNumber} className="bg-blue-200 p-2 border rounded-4xl w-25 h-16 shadow-xl text-sm w-20 text-center">
                         <div className="font-semibold">{seat.seatNumber}</div>
                         <div className="text-xs text-gray-600">
                           {seat.passenger ? seat.passenger.id : 'Empty'}
@@ -160,7 +160,7 @@ export default function SeatMatrixPage() {
                   {/* Right side: seats 3–5 */}
                   <div className="flex gap-2">
                     {row.slice(3, 6).map((seat) => (
-                      <div key={seat.seatNumber} className="bg-blue-100 p-2 border rounded-4xl shadow-xl text-sm w-20 text-center">
+                      <div key={seat.seatNumber} className="bg-blue-200 p-2 border rounded-4xl w-25 h-16 shadow-xl text-sm w-20 text-center">
                         <div className="font-semibold">{seat.seatNumber}</div>
                         <div className="text-xs text-gray-600">
                           {seat.passenger ? seat.passenger.id : 'Empty'}
