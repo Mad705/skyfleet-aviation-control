@@ -10,6 +10,21 @@ export default function ResourceManagerDashboard() {
     { id: 3, gateNumber: 'G3', status: 'Available' },
     { id: 4, gateNumber: 'G4', status: 'Available' },
     { id: 5, gateNumber: 'G5', status: 'Available' },
+    { id: 6, gateNumber: 'G6', status: 'Available' },
+    { id: 7, gateNumber: 'G7', status: 'Available' },
+    { id: 8, gateNumber: 'G8', status: 'Available' },
+    { id: 9, gateNumber: 'G9', status: 'Available' },
+    { id: 10, gateNumber: 'G10', status: 'Available' },
+    { id: 11, gateNumber: 'G11', status: 'Available' },
+    { id: 12, gateNumber: 'G12', status: 'Available' },
+    { id: 13, gateNumber: 'G13', status: 'Available' },
+    { id: 14, gateNumber: 'G14', status: 'Available' },
+    { id: 15, gateNumber: 'G15', status: 'Available' },
+    { id: 16, gateNumber: 'G16', status: 'Available' },
+    { id: 17, gateNumber: 'G17', status: 'Available' },
+    { id: 18, gateNumber: 'G18', status: 'Available' },
+    { id: 19, gateNumber: 'G19', status: 'Available' },
+    { id: 20, gateNumber: 'G20', status: 'Available' },
   ]);
 
   const [runways, setRunways] = useState([

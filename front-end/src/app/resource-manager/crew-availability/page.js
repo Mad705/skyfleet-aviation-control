@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function ResourceManagerCrew() {
   const [crew, setCrew] = useState([]);
 
-  // Fetch crew data from a JSON file
+  // Fetch crew data from the updated JSON file
   useEffect(() => {
     fetch('/crewDetails.json')
       .then((response) => response.json())
@@ -35,6 +35,20 @@ export default function ResourceManagerCrew() {
           ? {
               ...member,
               availability: "Standby",
+            }
+          : member
+      )
+    );
+  };
+
+  // Function to confirm and switch crew to "Assigned" status
+  const confirmAssignment = (id) => {
+    setCrew((prevCrew) =>
+      prevCrew.map((member) =>
+        member.id === id
+          ? {
+              ...member,
+              availability: "Assigned",
             }
           : member
       )
@@ -88,12 +102,26 @@ export default function ResourceManagerCrew() {
                   Duty Finished
                 </button>
               ) : (
-                <button
-                  onClick={() => toggleAvailability(member.id)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  {member.availability === "Standby" ? "Set to Off-Duty" : "Set to Standby"}
-                </button>
+                <>
+                  <button
+                    onClick={() => toggleAvailability(member.id)}
+                    className={`mt-4 px-4 py-2 rounded text-white ${
+                      member.availability === "Standby"
+                        ? "bg-blue-500 hover:bg-blue-600"
+                        : "bg-green-500 hover:bg-green-600"
+                    }`}
+                  >
+                    {member.availability === "Standby" ? "Set to Off-Duty" : "Set to Standby"}
+                  </button>
+                  {member.availability === "Standby" && (
+                    <button
+                      onClick={() => confirmAssignment(member.id)}
+                      className="mt-4 ml-2 px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
+                    >
+                      Confirm
+                    </button>
+                  )}
+                </>
               )}
             </div>
           ))}
