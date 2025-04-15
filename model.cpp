@@ -4,10 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-using std::string;
-using std::vector;
-using std::cout;
-using std::endl;
+
 using namespace mysqlx;
 using namespace std;
 
@@ -60,6 +57,18 @@ void displayTable(vector<vector<std::string>> data){
     }
     cout << endl;
 };
+int login(std::string username,std::string password , std::string role){
+    Session session("localhost", 33060, "root", "teNma!511");
+    std::string query = "SELECT * FROM skyfleet.person WHERE person_id = ? AND password = ? AND role = ?";
+    auto result = session.sql(query)
+                        .bind(username, password, role)
+                        .execute();
+    if (result.count() > 0) {
+        return 1;
+    } 
+    return 0;
+                    
+}
 int main() {
     try {
         // Connect to MySQL Server with X Protocol
@@ -74,10 +83,7 @@ int main() {
         vector<vector<std::string>> data3 = convertTo2DVector(result3);
        
 
-        // Print the 2D vector
-        displayTable(data1);
-        displayTable(data2);
-        displayTable(data3);
+        cout<<login("1","pass123","passenger");
 
 
     

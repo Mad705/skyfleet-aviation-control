@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const flightStatuses = [
@@ -38,8 +38,21 @@ const getStatusIndex = (status) => flightStatuses.indexOf(status);
 
 const TrackFlightPage = () => {
   const [flights, setFlights] = useState(initialTrackedFlights);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleCancel = (flightId) => {
+    const flight = flights.find(f => f.id === flightId);
+    const currentIndex = getStatusIndex(flight.currentStatus);
+
+    if (currentIndex >= getStatusIndex('Boarding')) {
+      alert(`Flight ${flight.id} cannot be canceled once it's in or beyond the 'Boarding' stage.`);
+      return;
+    }
+
     const confirmCancel = confirm(`Are you sure you want to cancel Flight ${flightId}?`);
     if (confirmCancel) {
       setFlights(prev => prev.filter(flight => flight.id !== flightId));
@@ -53,7 +66,6 @@ const TrackFlightPage = () => {
         <h1 className="text-xl font-bold">Passenger</h1>
         <div className="space-x-20">
           <Link href="/passenger/dashboard" className="hover:underline">Dashboard</Link>
-          <Link href="/passenger/book-flights" className="hover:underline">Book Flight</Link>
           <Link href="/passenger/track-flight" className="underline font-semibold">Track Flight</Link>
           <Link href="/passenger/track-baggage" className="hover:underline">Track baggage</Link>
           <Link href="/passenger/register-baggage" className="hover:underline">Register Baggage</Link>
@@ -61,7 +73,7 @@ const TrackFlightPage = () => {
       </nav>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="min-h-screen mx-auto p-6">
         <h2 className="text-2xl font-semibold mb-6">Track Your Flights</h2>
 
         {flights.length === 0 && (
@@ -70,6 +82,7 @@ const TrackFlightPage = () => {
 
         {flights.map(flight => {
           const currentIndex = getStatusIndex(flight.currentStatus);
+          const canBeCanceled = currentIndex < getStatusIndex('Boarding');
 
           return (
             <div key={flight.id} className="bg-white rounded-xl shadow p-6 mb-10">
@@ -77,7 +90,10 @@ const TrackFlightPage = () => {
                 Flight {flight.id} - {flight.src} ➜ {flight.dest}
               </h3>
               <p className="text-gray-600 mb-4">
-                Date & Time: {new Date(flight.datetime).toLocaleString()}
+                Date & Time:{' '}
+                {isClient
+                  ? new Date(flight.datetime).toLocaleString()
+                  : 'Loading...'}
               </p>
 
               <div className="overflow-x-auto mb-6">
@@ -112,9 +128,14 @@ const TrackFlightPage = () => {
 
               <button
                 onClick={() => handleCancel(flight.id)}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                disabled={!canBeCanceled}
+                className={`px-4 py-2 rounded transition text-white ${
+                  canBeCanceled
+                    ? 'bg-red-600 hover:bg-red-700'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
               >
-                Cancel Flight
+                {canBeCanceled ? 'Cancel Flight' : 'Cannot Cancel'}
               </button>
             </div>
           );
