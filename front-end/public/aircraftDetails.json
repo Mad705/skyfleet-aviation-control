@@ -1,19 +1,169 @@
 {
   "aircrafts": [
-    { "id": 1, "name": "Boeing 737", "model": "737", "capacity": 180, "availability": "Operational", "location": "Gate A1" },
-    { "id": 2, "name": "Airbus A320", "model": "A320", "capacity": 160, "availability": "Under Maintenance", "location": "Hangar 3" },
-    { "id": 3, "name": "Cessna 172", "model": "172", "capacity": 4, "availability": "Operational", "location": "Runway R2" },
-    { "id": 4, "name": "Boeing 747", "model": "747", "capacity": 416, "availability": "Operational", "location": "Gate B2" },
-    { "id": 5, "name": "Embraer E190", "model": "E190", "capacity": 114, "availability": "Maintenance", "location": "Hangar 1" },
-    { "id": 6, "name": "Bombardier CRJ700", "model": "CRJ700", "capacity": 78, "availability": "Operational", "location": "Gate C3" },
-    { "id": 7, "name": "Boeing 777", "model": "777", "capacity": 396, "availability": "Under Maintenance", "location": "Hangar 2" },
-    { "id": 8, "name": "Airbus A380", "model": "A380", "capacity": 853, "availability": "Operational", "location": "Gate D4" },
-    { "id": 9, "name": "Piper PA-28", "model": "PA-28", "capacity": 4, "availability": "Operational", "location": "Runway R1" },
-    { "id": 10, "name": "Boeing 767", "model": "767", "capacity": 269, "availability": "Under Maintenance", "location": "Hangar 4" },
-    { "id": 11, "name": "Gulfstream G650", "model": "G650", "capacity": 18, "availability": "Operational", "location": "Gate E5" },
-    { "id": 12, "name": "Boeing 787 Dreamliner", "model": "787", "capacity": 296, "availability": "Operational", "location": "Gate F6" },
-    { "id": 13, "name": "Airbus A350", "model": "A350", "capacity": 350, "availability": "Under Maintenance", "location": "Hangar 5" },
-    { "id": 14, "name": "Cessna Citation X", "model": "Citation X", "capacity": 12, "availability": "Operational", "location": "Runway R3" },
-    { "id": 15, "name": "Boeing 757", "model": "757", "capacity": 243, "availability": "Operational", "location": "Gate G7" }
+    {
+      "id": 1,
+      "name": "Boeing 737",
+      "model": "737",
+      "capacity": 180,
+      "availability": "Operational",
+      "location": "Gate A1",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-15",
+      "nextScheduledFlight": "2025-04-17T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Airbus A320",
+      "model": "A320",
+      "capacity": 160,
+      "availability": "Under Maintenance",
+      "location": "Hangar 3",
+      "status": "Unavailable",
+      "lastMaintenanceDate": "2025-04-10",
+      "nextScheduledFlight": null
+    },
+    {
+      "id": 3,
+      "name": "Cessna 172",
+      "model": "172",
+      "capacity": 4,
+      "availability": "Operational",
+      "location": "Runway R2",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-20",
+      "nextScheduledFlight": "2025-04-16T14:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Boeing 747",
+      "model": "747",
+      "capacity": 416,
+      "availability": "Operational",
+      "location": "Gate B2",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-25",
+      "nextScheduledFlight": "2025-04-18T10:00:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Embraer E190",
+      "model": "E190",
+      "capacity": 114,
+      "availability": "Maintenance",
+      "location": "Hangar 1",
+      "status": "Unavailable",
+      "lastMaintenanceDate": "2025-04-12",
+      "nextScheduledFlight": null
+    },
+    {
+      "id": 6,
+      "name": "Bombardier CRJ700",
+      "model": "CRJ700",
+      "capacity": 78,
+      "availability": "Operational",
+      "location": "Gate C3",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-18",
+      "nextScheduledFlight": "2025-04-16T16:00:00Z"
+    },
+    {
+      "id": 7,
+      "name": "Boeing 777",
+      "model": "777",
+      "capacity": 396,
+      "availability": "Under Maintenance",
+      "location": "Hangar 2",
+      "status": "Unavailable",
+      "lastMaintenanceDate": "2025-04-08",
+      "nextScheduledFlight": null
+    },
+    {
+      "id": 8,
+      "name": "Airbus A380",
+      "model": "A380",
+      "capacity": 853,
+      "availability": "Operational",
+      "location": "Gate D4",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-22",
+      "nextScheduledFlight": "2025-04-19T09:00:00Z"
+    },
+    {
+      "id": 9,
+      "name": "Piper PA-28",
+      "model": "PA-28",
+      "capacity": 4,
+      "availability": "Operational",
+      "location": "Runway R1",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-10",
+      "nextScheduledFlight": "2025-04-16T12:00:00Z"
+    },
+    {
+      "id": 10,
+      "name": "Boeing 767",
+      "model": "767",
+      "capacity": 269,
+      "availability": "Under Maintenance",
+      "location": "Hangar 4",
+      "status": "Unavailable",
+      "lastMaintenanceDate": "2025-04-05",
+      "nextScheduledFlight": null
+    },
+    {
+      "id": 11,
+      "name": "Gulfstream G650",
+      "model": "G650",
+      "capacity": 18,
+      "availability": "Operational",
+      "location": "Gate E5",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-28",
+      "nextScheduledFlight": "2025-04-17T11:00:00Z"
+    },
+    {
+      "id": 12,
+      "name": "Boeing 787 Dreamliner",
+      "model": "787",
+      "capacity": 296,
+      "availability": "Operational",
+      "location": "Gate F6",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-30",
+      "nextScheduledFlight": "2025-04-18T13:00:00Z"
+    },
+    {
+      "id": 13,
+      "name": "Airbus A350",
+      "model": "A350",
+      "capacity": 350,
+      "availability": "Under Maintenance",
+      "location": "Hangar 5",
+      "status": "Unavailable",
+      "lastMaintenanceDate": "2025-04-07",
+      "nextScheduledFlight": null
+    },
+    {
+      "id": 14,
+      "name": "Cessna Citation X",
+      "model": "Citation X",
+      "capacity": 12,
+      "availability": "Operational",
+      "location": "Runway R3",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-12",
+      "nextScheduledFlight": "2025-04-16T15:00:00Z"
+    },
+    {
+      "id": 15,
+      "name": "Boeing 757",
+      "model": "757",
+      "capacity": 243,
+      "availability": "Operational",
+      "location": "Gate G7",
+      "status": "Available",
+      "lastMaintenanceDate": "2025-03-17",
+      "nextScheduledFlight": "2025-04-17T14:00:00Z"
+    }
   ]
 }
