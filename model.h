@@ -103,6 +103,25 @@ vector<vector<std::string>> fetchcrew() {
     }
     return sample;
 }
+vector<vector<std::string>> fetchpass() {
+    vector<vector<std::string>> sample;
+    try {
+
+        Session session("localhost", 33060, "root", "teNma!511");
+        std::string query = "SELECT * FROM skyfleet.person join skyfleet.customer on person.person_id=customer.customer_id" ;
+
+        auto result = session.sql(query).execute();
+        
+        return convertTo2DVector(result);  // assuming this exists
+    } catch (const mysqlx::Error& err) {
+        std::cerr << "MySQL Error: " << err.what() << std::endl;
+    } catch (const std::exception& ex) {
+        std::cerr << "Standard Exception: " << ex.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown error occurred while fetching data." << std::endl;
+    }
+    return sample;
+}
 void displayTable(vector<vector<std::string>> data){
     for (const auto& row : data) {
         for (const auto& val : row) {

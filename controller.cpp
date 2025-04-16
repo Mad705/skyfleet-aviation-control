@@ -1,6 +1,5 @@
 #include "crow_all.h"
 #include <iostream>
-#include "model.h"
 #include "controller.h"
 #include<string>
 #include<vector>
@@ -11,27 +10,17 @@ using namespace std;
 //g++ -o backend controller.cpp -I/opt/homebrew/Cellar/asio/1.30.2/include/ -std=c++17 -pthread
 using namespace crow;
 int main() {
-    unordered_map<std::string,Aircraft> aircraftMap;
-    unordered_map<std::string,Ticket> ticketMap;
-    unordered_map<std::string,Baggage> baggageMap;
-    vector<vector<std::string>> ac=fetchData("aircraft"),bg=fetchData("baggage"),tk=fetchData("ticket");
-    displayTable(tk);
-    for (vector<std::string> row : tk) {
-        Ticket tkk(row[0], row[5], row[3], row[4],row[2],row[1]);
-        ticketMap[row[0]]=tkk;
-        //baggageMap[row[0]].getBaggageDetails();
-   }
-   ticketMap["FL002-1-A1"].getTicketDetails();
-    for (vector<std::string> row : bg) {
-        Baggage bgg(row[0], row[1], row[2], row[3],row[4],row[5],row[6]);
-        baggageMap[row[0]]=bgg;
-        //baggageMap[row[0]].getBaggageDetails();
-   }
-    for (vector<std::string> row : ac) {
-         Aircraft ac(row[0], row[1], row[2], row[7], row[8]);
-         aircraftMap[row[0]] = ac;
-    }
-    cout<<aircraftMap["AC004"].name<<endl;
+    ResourceManager& rm = ResourceManager::getInstance();
+    FlightManager& fm = FlightManager::getInstance();
+    Datarepo& dm = Datarepo::getInstance();
+    rm.loadCrewData();
+    fm.loadAircraftData();
+    dm.loadBaggageData();
+    dm.loadTicketData();
+    dm.loadpassData();
+    fm.loadflights();
+    rm.loadGR();
+    fm.flightMap["FL002"].displaySeatMatrixPricePass();
     crow::App<crow::CORSHandler> app;
     auto& cors = app.get_middleware<crow::CORSHandler>();
     cors.global()
