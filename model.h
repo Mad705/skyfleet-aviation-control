@@ -131,3 +131,87 @@ void displayTable(vector<vector<std::string>> data){
     }
     cout << endl;
 };
+bool insertFlightAndUpdateAircraft(
+    const std::string& flight_id,
+    const std::string& src,
+    const std::string& dest,
+    const std::string& datetime,
+    const std::string& aircraft_id,
+    const std::string& gate_number,
+    const std::string& runway_number,
+    const std::string& status,
+    double base_price
+) {
+    try {
+        Session session("localhost", 33060, "root", "teNma!511");
+        
+        // Start transaction
+        session.startTransaction();
+        
+        // Insert flight
+        std::string insertFlightQuery = 
+            "INSERT INTO skyfleet.flight (flight_id, src, dest, datetime, aircraft_id, "
+            "gate_number, runway_number, status, base_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        session.sql(insertFlightQuery)
+            .bind(flight_id, src, dest, datetime, aircraft_id, 
+                  gate_number, runway_number, status, base_price)
+            .execute();
+        
+        // Update aircraft status
+        std::string updateAircraftQuery = 
+            "UPDATE skyfleet.aircraft SET availability = 'assigned' WHERE aircraft_id = ?";
+        
+        session.sql(updateAircraftQuery)
+            .bind(aircraft_id)
+            .execute();
+        
+        // Commit transaction
+        session.commit();
+        
+        return true;
+    } catch (const mysqlx::Error& err) {
+        std::cerr << "MySQL Error: " << err.what() << std::endl;
+        return false;
+    } catch (const std::exception& ex) {
+        std::cerr << "Standard Exception: " << ex.what() << std::endl;
+        return false;
+    } catch (...) {
+        std::cerr << "Unknown error occurred while inserting flight." << std::endl;
+        return false;
+    }
+}
+void updateFlightStatus(std::string flightId, std::string newStatus) {
+    try {
+        // Create session (consider using connection pooling in production)
+        mysqlx::Session session("localhost", 33060, "root", "teNma!511");
+        
+        // Start transaction
+        session.startTransaction();
+        
+        // Update flight status
+        std::string updateQuery = 
+            "UPDATE skyfleet.flight SET status = ? WHERE flight_id = ?";
+        
+        session.sql(updateQuery)
+            .bind(newStatus, flightId)
+            .execute();
+        
+        // Commit transaction
+        session.commit();
+        
+        std::cout << "Successfully updated flight " << flightId 
+                  << " to status: " << newStatus << std::endl;
+    
+    } catch (const mysqlx::Error& err) {
+        std::cerr << "MySQL Error: " << err.what() << std::endl;
+        // Transaction will be automatically rolled back when session is destroyed
+        throw; // Consider rethrowing or handling the error appropriately
+    } catch (const std::exception& ex) {
+        std::cerr << "Standard Exception: " << ex.what() << std::endl;
+        throw;
+    } catch (...) {
+        std::cerr << "Unknown error occurred while updating flight status." << std::endl;
+        throw;
+    }
+}

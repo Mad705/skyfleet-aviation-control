@@ -6,10 +6,7 @@
       "model": "737",
       "capacity": 180,
       "availability": "Operational",
-      "location": "Gate A1",
-      "status": "Available",
-      "lastMaintenanceDate": "2025-03-15",
-      "nextScheduledFlight": "2025-04-17T08:00:00Z"
+      "status": "Available"
     },
     {
       "id": 2,

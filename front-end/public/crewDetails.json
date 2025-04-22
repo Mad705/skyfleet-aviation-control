@@ -6,13 +6,7 @@
       "age": 45,
       "country": "India",
       "role": "Pilot",
-      "availability": "Standby",
-      "methods": {
-        "getDetails": "Returns the details of the crew member",
-        "updateAvailability": "Updates the availability status of the crew member",
-        "assignFlight": "Assigns the crew member to a flight",
-        "removeFromFlight": "Removes the crew member from a flight"
-      }
+      "availability": "Standby"
     },
     {
       "id": 2,

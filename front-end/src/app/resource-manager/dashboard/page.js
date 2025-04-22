@@ -4,60 +4,37 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function ResourceManagerDashboard() {
-  const [gates, setGates] = useState([
-    { id: 1, gateNumber: 'G1', status: 'Available' },
-    { id: 2, gateNumber: 'G2', status: 'Available' },
-    { id: 3, gateNumber: 'G3', status: 'Available' },
-    { id: 4, gateNumber: 'G4', status: 'Available' },
-    { id: 5, gateNumber: 'G5', status: 'Available' },
-    { id: 6, gateNumber: 'G6', status: 'Available' },
-    { id: 7, gateNumber: 'G7', status: 'Available' },
-    { id: 8, gateNumber: 'G8', status: 'Available' },
-    { id: 9, gateNumber: 'G9', status: 'Available' },
-    { id: 10, gateNumber: 'G10', status: 'Available' },
-    { id: 11, gateNumber: 'G11', status: 'Available' },
-    { id: 12, gateNumber: 'G12', status: 'Available' },
-    { id: 13, gateNumber: 'G13', status: 'Available' },
-    { id: 14, gateNumber: 'G14', status: 'Available' },
-    { id: 15, gateNumber: 'G15', status: 'Available' },
-    { id: 16, gateNumber: 'G16', status: 'Available' },
-    { id: 17, gateNumber: 'G17', status: 'Available' },
-    { id: 18, gateNumber: 'G18', status: 'Available' },
-    { id: 19, gateNumber: 'G19', status: 'Available' },
-    { id: 20, gateNumber: 'G20', status: 'Available' },
-  ]);
-
-  const [runways, setRunways] = useState([
-    { id: 1, runwayNumber: 'R1', status: 'Available' },
-    { id: 2, runwayNumber: 'R2', status: 'Available' },
-    { id: 3, runwayNumber: 'R3', status: 'Available' },
-    { id: 4, runwayNumber: 'R4', status: 'Available' },
-    { id: 5, runwayNumber: 'R5', status: 'Available' },
-  ]);
-
+  const [gates, setGates] = useState([]);
+  const [runways, setRunways] = useState([]);
   const [flightDetails, setFlightDetails] = useState({ gates: {}, runways: {} });
 
   useEffect(() => {
-    fetch('/flightDetails.json')
+    fetch('http://localhost:5000/api/gr')
       .then((response) => response.json())
       .then((data) => {
-        setFlightDetails(data);
+        // Process gates
+        const gatesData = Object.keys(data.gates).map((gateNumber, index) => ({
+          id: index + 1,
+          gateNumber,
+          status: data.gates[gateNumber] ? 'Occupied' : 'Available',
+        }));
+        setGates(gatesData);
 
-        setGates((prevGates) =>
-          prevGates.map((gate) => ({
-            ...gate,
-            status: data.gates[gate.gateNumber] ? 'Occupied' : 'Available',
-          }))
-        );
+        // Process runways
+        const runwaysData = Object.keys(data.runways).map((runwayNumber, index) => ({
+          id: index + 1,
+          runwayNumber,
+          status: data.runways[runwayNumber] ? 'Occupied' : 'Available',
+        }));
+        setRunways(runwaysData);
 
-        setRunways((prevRunways) =>
-          prevRunways.map((runway) => ({
-            ...runway,
-            status: data.runways[runway.runwayNumber] ? 'Occupied' : 'Available',
-          }))
-        );
+        // Store flight details for occupied gates and runways
+        setFlightDetails({
+          gates: data.gates,
+          runways: data.runways,
+        });
       })
-      .catch((error) => console.error('Error fetching flight details:', error));
+      .catch((error) => console.error('Error fetching gates and runways:', error));
   }, []);
 
   return (
@@ -112,19 +89,20 @@ export default function ResourceManagerDashboard() {
                   flightDetails.gates[gate.gateNumber] && (
                     <div className="mt-2 text-sm text-gray-600">
                       <p>
-                        <strong>Flight ID:</strong> {flightDetails.gates[gate.gateNumber].flightId}
+                        <strong>Flight ID:</strong> {flightDetails.gates[gate.gateNumber].id}
                       </p>
                       <p>
-                        <strong>Airline:</strong> {flightDetails.gates[gate.gateNumber].airline}
+                        <strong>Source:</strong> {flightDetails.gates[gate.gateNumber].src}
                       </p>
                       <p>
-                        <strong>Destination:</strong> {flightDetails.gates[gate.gateNumber].destination}
+                        <strong>Destination:</strong> {flightDetails.gates[gate.gateNumber].dest}
                       </p>
                       <p>
-                        <strong>Departure:</strong>{' '}
-                        {new Date(
-                          flightDetails.gates[gate.gateNumber].departureTime
-                        ).toLocaleString()}
+                        <strong>Time:</strong>{' '}
+                        {new Date(flightDetails.gates[gate.gateNumber].datetime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Status:</strong> {flightDetails.gates[gate.gateNumber].status}
                       </p>
                     </div>
                   )}
@@ -159,20 +137,20 @@ export default function ResourceManagerDashboard() {
                   flightDetails.runways[runway.runwayNumber] && (
                     <div className="mt-2 text-sm text-gray-600">
                       <p>
-                        <strong>Flight ID:</strong> {flightDetails.runways[runway.runwayNumber].flightId}
+                        <strong>Flight ID:</strong> {flightDetails.runways[runway.runwayNumber].id}
                       </p>
                       <p>
-                        <strong>Airline:</strong> {flightDetails.runways[runway.runwayNumber].airline}
+                        <strong>Source:</strong> {flightDetails.runways[runway.runwayNumber].src}
                       </p>
                       <p>
-                        <strong>Destination:</strong>{' '}
-                        {flightDetails.runways[runway.runwayNumber].destination}
+                        <strong>Destination:</strong> {flightDetails.runways[runway.runwayNumber].dest}
                       </p>
                       <p>
-                        <strong>Departure:</strong>{' '}
-                        {new Date(
-                          flightDetails.runways[runway.runwayNumber].departureTime
-                        ).toLocaleString()}
+                        <strong>Time:</strong>{' '}
+                        {new Date(flightDetails.runways[runway.runwayNumber].datetime).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Status:</strong> {flightDetails.runways[runway.runwayNumber].status}
                       </p>
                     </div>
                   )}

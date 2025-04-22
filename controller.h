@@ -295,9 +295,11 @@ class FlightSubject {
                 }
             }
             void loadflights();
-            void addFlight(Flight* fl) ;
-            void addAircraft(Aircraft* ac);
+            void addFlight(const crow::json::rvalue& flightData) ;
             void displayFlights();
+            crow::json::wvalue getAllFlightsSeatMatrix();
+            crow::json::wvalue getAvailableAircrafts();
+            crow::json::wvalue getAllAircrafts();
         };
         
         FlightManager FlightManager::instance ;
@@ -324,14 +326,64 @@ class FlightSubject {
                         crewMap[row[0]] = crewMember;
                     }
                 }
+
                 void loadGR();
+
                
-            
                 void assignGate(int gateNo, Flight* fl) ;
             
                 void assignRunway(int runwayNo, Flight* fl) ;
             
                 void assignCrew(const Crew& c);
+                crow::json::wvalue gatesAndRunways();
+                crow::json::wvalue getAvailCrews(){
+                    crow::json::wvalue crewsJson;
+                    int index = 0;
+                    
+                    for (const auto& pair : crewMap) {
+                        const Crew& crew = pair.second;
+                        crow::json::wvalue crewJson;
+                       
+                        if(crew.availability=="standby"){
+                        // Basic person info
+                        crewJson["id"] = crew.id;
+                        crewJson["name"] = crew.name;
+                        crewJson["role"] = crew.crewRole;  
+                        crewJson["status"] = crew.availability;            
+                        crewsJson[index++] = std::move(crewJson);
+                        }
+                    
+                    
+                }
+                    return crewsJson;
+                
+                }
+                crow::json::wvalue getAllCrews() {
+                    crow::json::wvalue crewsJson;
+                    int index = 0;
+                    
+                    for (const auto& pair : crewMap) {
+                        const Crew& crew = pair.second;
+                        crow::json::wvalue crewJson;
+                        
+                        // Basic person info
+                        crewJson["id"] = crew.id;
+                        crewJson["name"] = crew.name;
+                        crewJson["country"] = crew.country;
+                        crewJson["role"] = crew.role;
+                        
+                        // Crew-specific info
+                        crewJson["availability"] = crew.availability;
+                        crewJson["crewRole"] = crew.crewRole;
+                        crewJson["flight_id"] = crew.flight_id;
+                        
+                        crewsJson[index++] = std::move(crewJson);
+                    }
+                    
+                    return crewsJson;
+                }
+               
+                
             };
             ResourceManager ResourceManager::instance;
         
@@ -382,13 +434,14 @@ public:
     vector<vector<int>> seatPricing; // 10 rows × 6 seats
     vector<vector<Passenger*>> passengerList;
     Aircraft ac;
-    map<std::string, Crew> crewMap;
+    Crew pilot,copilot,att1,gs1,att2,gs2;
     vector<Baggage> baggageList;
-    std::string gate, runway;
+    std::string gate="NULL", runway="NULL";
     Flight(){};
     Flight(const std::string& _id, const std::string& _src, const std::string& _dest, const std::string& _datetime,std::string _ac,std::string _gate,std::string _runway, std::string _status,std::string _basePrice)
     : id(_id), src(_src), dest(_dest), datetime(_datetime), basePrice(stod(_basePrice)), status(_status),gate(_gate),runway(_runway) {
         FlightManager& fm = FlightManager::getInstance();
+        cout<<"gate is : "<<_gate<<endl;
         if (fm.aircraftMap.find(_ac) != fm.aircraftMap.end()) {
             ac = fm.aircraftMap[_ac];
         } else {
@@ -419,8 +472,6 @@ public:
         }
     }
 
-    gate = -1;
-    runway = -1;
 }
     void loadbaggage(){
         Datarepo& dm = Datarepo::getInstance();
@@ -430,6 +481,7 @@ public:
             }
         }
     }
+
     void loadpass(){
         Datarepo& dm = Datarepo::getInstance();
         for(auto i:dm.ticketMap){
@@ -445,15 +497,35 @@ public:
             }
         }
     }
-    void loadcrewmem(){
+    crow::json::wvalue getSeatMatrixJson();
+    void loadcrewmem() {
         ResourceManager& rm = ResourceManager::getInstance(); // Singleton access
-        for(auto i:rm.crewMap){
-            if(id==i.second.flight_id){
-                crewMap[i.second.crewRole]=i.second;
+        for (auto i : rm.crewMap) {
+            if (id == i.second.flight_id) {
+                if (i.second.crewRole == "pilot") {
+                    pilot = i.second;
+                } else if (i.second.crewRole == "copilot") {
+                    copilot = i.second;
+                } else if (i.second.crewRole == "attendant") {
+                    if (att1.crewRole.empty()) { // Check if att1 is unassigned
+                        att1 = i.second;
+                    } else { // att1 is assigned, so assign to att2
+                        att2 = i.second;
+                    }
+                } else if (i.second.crewRole == "ground-staff") {
+                    if (gs1.crewRole.empty()) { // Check if gs1 is unassigned
+                        gs1 = i.second;
+                    } else { // gs1 is assigned, so assign to gs2
+                        gs2 = i.second;
+                    }
+                }
             }
         }
     }
-    void updateStatus(std::string newStatus);
+    crow::json::wvalue getFlightDetails();
+    void updateStatus(std::string newStatus){
+        status=newStatus;
+    }
     void displaySeatMatrixPricePass(){
         // Inside Flight::displaySeatMatrixPricePass()
 
@@ -494,21 +566,56 @@ std::cout << "==========================================" << std::endl;
 
     }
 };
-
-// Factory Pattern for Flight
 class FlightFactory {
-public:
-};
-
+    public:
+        static Flight createFlight(const std::string& id, const std::string& src, 
+                                 const std::string& dest, const std::string& datetime,
+                                 const std::string& ac, const std::string& gate,
+                                 const std::string& runway, const std::string& status,
+                                 const std::string& basePrice) {
+            return Flight(id, src, dest, datetime, ac, gate, runway, status, basePrice);
+        }
+    
+        static Flight createFromJson(const crow::json::rvalue& flightData) {
+            return Flight(flightData["id"].s(), 
+                         flightData["src"].s(),
+                         flightData["dest"].s(),
+                         flightData["datetime"].s(),
+                         flightData["ac"].s(),
+                         flightData["gate"].s(),
+                         flightData["runway"].s(),
+                         flightData["status"].s(),
+                         flightData["basePrice"].s());
+        }
+    };
 // Factory Pattern for Ticket
-class TicketFactory ;
+class TicketFactory {
+    public:
+        static Ticket createTicket(const std::string& id, const std::string& passenger_id,
+                                 const std::string& flight_id, const std::string& seatNumber,
+                                 const std::string& price, const std::string& datetime) {
+            return Ticket(id, datetime, seatNumber, price, flight_id, passenger_id);
+        }
+    
+        static Ticket createFromJson(const crow::json::rvalue& ticketData) {
+            return Ticket(ticketData["id"].s(),
+                         ticketData["datetime"].s(),
+                         ticketData["seatNumber"].s(),
+                         ticketData["price"].s(),
+                         ticketData["flight_id"].s(),
+                         ticketData["passenger_id"].s());
+        }
+    };
 
 // Singleton Pattern for FlightManager
 void FlightManager::loadflights(){
     {
         vector<vector<std::string>> flData = fetchData("flight");
+        displayTable(flData);
+        cout<<"total flights : "<<flData.size()<<endl;
             for (const auto& row : flData) {
                 Flight fl(row[0], row[1], row[2], row[3],row[4], row[5], row[6], row[7], row[8]);
+                cout<<"gate inside : "<<fl.runway<<endl;
                 if(fl.status!="Scheduled"){
                     fl.loadbaggage();
                     fl.loadcrewmem();
@@ -516,6 +623,7 @@ void FlightManager::loadflights(){
                 }
                 flightMap[row[0]] = fl;
             }
+            cout<<"total flights : "<<flightMap.size()<<endl;
     }
 };
 void ResourceManager::loadGR(){
@@ -528,3 +636,273 @@ void ResourceManager::loadGR(){
                         runways[stoi(i[0])]=fm23.flightMap[i[1]];
                     }
 };
+
+crow::json::wvalue Flight::getFlightDetails() {
+    crow::json::wvalue flightJson;
+    
+    // Basic flight info
+    flightJson["id"] = id;
+    flightJson["src"] = src;
+    flightJson["dest"] = dest;
+    flightJson["datetime"] = datetime;
+    flightJson["status"] = status;
+    
+    // Aircraft details (always present)
+    crow::json::wvalue aircraftJson;
+    aircraftJson["id"] = ac.id;
+    aircraftJson["name"] = ac.name;
+    aircraftJson["model"] = ac.model;
+    aircraftJson["capacity"] = ac.capacity;
+    flightJson["aircraft"] = std::move(aircraftJson);
+    
+    // Crew details
+    crow::json::wvalue crewJson;
+    if (status == "Scheduled") {
+        crewJson["pilot"] = "not assigned";
+        crewJson["copilot"] = "not assigned";
+        
+        // Empty arrays with "not assigned" values
+        crow::json::wvalue attendantsJson;
+        attendantsJson[0] = "not assigned";
+        crewJson["attendants"] = std::move(attendantsJson);
+        
+        crow::json::wvalue groundStaffJson;
+        groundStaffJson[0] = "not assigned";
+        crewJson["groundStaff"] = std::move(groundStaffJson);
+    } else {
+        vector<std::string> attendants;
+        vector<std::string> groundStaff;
+        
+        crewJson["pilot"] = pilot.name.empty() ? "not assigned" : pilot.name;
+        crewJson["copilot"] = copilot.name.empty() ? "not assigned" : copilot.name;
+        
+        // Add ground staff
+        if (!gs1.name.empty()) groundStaff.push_back(gs1.name);
+        if (!gs2.name.empty()) groundStaff.push_back(gs2.name);
+        
+        // Add attendants
+        if (!att1.name.empty()) attendants.push_back(att1.name);
+        if (!att2.name.empty()) attendants.push_back(att2.name);
+        
+        // Handle attendants
+        if (attendants.empty()) {
+            crow::json::wvalue attendantsJson;
+            attendantsJson[0] = "not assigned";
+            crewJson["attendants"] = std::move(attendantsJson);
+        } else {
+            crow::json::wvalue attendantsJson;
+            for (size_t i = 0; i < attendants.size(); ++i) {
+                attendantsJson[i] = attendants[i];
+            }
+            crewJson["attendants"] = std::move(attendantsJson);
+        }
+        
+        // Handle ground staff
+        if (groundStaff.empty()) {
+            crow::json::wvalue groundStaffJson;
+            groundStaffJson[0] = "not assigned";
+            crewJson["groundStaff"] = std::move(groundStaffJson);
+        } else {
+            crow::json::wvalue groundStaffJson;
+            for (size_t i = 0; i < groundStaff.size(); ++i) {
+                groundStaffJson[i] = groundStaff[i];
+            }
+            crewJson["groundStaff"] = std::move(groundStaffJson);
+        }
+        
+    }
+    flightJson["crew"] = std::move(crewJson);
+    flightJson["gate"] = gate;
+    flightJson["runway"] = runway;
+    // Gate and runway
+    
+    
+    return flightJson;
+}
+crow::json::wvalue Flight::getSeatMatrixJson() {
+    crow::json::wvalue seatMatrixJson;
+    Datarepo& dm = Datarepo::getInstance();
+
+    // Create rows A-J (0-9 in passengerList)
+    for (int row = 0; row < 10; row++) {
+        crow::json::wvalue rowJson;
+        char rowChar = 'A' + row;
+
+        // Create columns 1-6
+        for (int col = 0; col < 6; col++) {
+            crow::json::wvalue seatJson;
+            std::string seatNumber = std::string(1, rowChar) + std::to_string(col + 1);
+            seatJson["seatNumber"] = seatNumber;
+
+            if (passengerList[row][col] != nullptr) {
+                // Passenger exists in this seat
+                Passenger* passenger = passengerList[row][col];
+                crow::json::wvalue passengerJson;
+                passengerJson["id"] = passenger->id;
+                passengerJson["name"] = passenger->name;
+                seatJson["passenger"] = std::move(passengerJson);
+            } else {
+                // Empty seat
+                seatJson["passenger"] = nullptr;
+            }
+
+            // Add price information
+            seatJson["price"] = seatPricing[row][col];
+
+            // Add seat to row
+            rowJson[col] = std::move(seatJson);
+        }
+
+        // Add row to seat matrix
+        seatMatrixJson[row] = std::move(rowJson);
+    }
+
+    return seatMatrixJson;
+}
+crow::json::wvalue FlightManager::getAllFlightsSeatMatrix() {
+    crow::json::wvalue response;
+    int index = 0;
+
+    for (auto& pair : flightMap) {
+        Flight& flight = pair.second;
+        crow::json::wvalue flightJson;
+
+        // Basic flight info
+        flightJson["id"] = flight.id;
+        flightJson["src"] = flight.src;
+        flightJson["dest"] = flight.dest;
+        flightJson["datetime"] = flight.datetime;
+        flightJson["status"] = flight.status;
+
+        // Aircraft info
+        crow::json::wvalue aircraftJson;
+        aircraftJson["name"] = flight.ac.name;
+        aircraftJson["model"] = flight.ac.model;
+        flightJson["aircraft"] = std::move(aircraftJson);
+
+        // Seat matrix
+        flightJson["seatMatrix"] = flight.getSeatMatrixJson();
+
+        // Add to response
+        response[index++] = std::move(flightJson);
+    }
+
+    return response;
+}
+crow::json::wvalue FlightManager::getAvailableAircrafts() {
+    crow::json::wvalue aircraftsJson;
+    int index = 0;
+    
+    for (const auto& pair : aircraftMap) {
+        const Aircraft& ac = pair.second;
+        // Only include aircraft with 'standby' or 'assigned' status
+        if (ac.avail == "standby") {
+            crow::json::wvalue aircraftJson;
+            aircraftJson["id"] = ac.id;
+            aircraftJson["name"] = ac.name;
+            aircraftJson["model"] = ac.model;
+            aircraftJson["capacity"] = ac.capacity;
+            aircraftJson["availability"] = ac.avail;
+            
+            aircraftsJson[index++] = std::move(aircraftJson);
+        }
+    }
+    
+    return aircraftsJson;
+}
+crow::json::wvalue FlightManager::getAllAircrafts() {
+    crow::json::wvalue aircraftsJson;
+    int index = 0;
+    
+    for (const auto& pair : aircraftMap) {
+        const Aircraft& ac = pair.second;
+        // Only include aircraft with 'standby' or 'assigned' status
+         
+            crow::json::wvalue aircraftJson;
+            aircraftJson["id"] = ac.id;
+            aircraftJson["name"] = ac.name;
+            aircraftJson["model"] = ac.model;
+            aircraftJson["capacity"] = ac.capacity;
+            aircraftJson["availability"] = ac.avail;
+            
+            aircraftsJson[index++] = std::move(aircraftJson);
+        
+    }
+    
+    return aircraftsJson;
+}
+void FlightManager::addFlight(const crow::json::rvalue& flightData) {
+    try {
+        // Extract all required fields from JSON
+        std::string id = flightData["id"].s();
+        std::string src = flightData["src"].s();
+        std::string dest = flightData["dest"].s();
+        std::string datetime = flightData["datetime"].s();
+        std::string ac = flightData["ac"].s();
+        std::string gate = flightData["gate"].s();
+        std::string runway = flightData["runway"].s();
+        std::string status = flightData["status"].s();
+        std::string basePrice = flightData["basePrice"].s();
+        bool dbSuccess = insertFlightAndUpdateAircraft(
+            id, src, dest, datetime, ac, 
+            gate, runway, status, std::stod(basePrice)
+        );
+
+        if (!dbSuccess) {
+            throw std::runtime_error("Failed to insert flight into database");
+        }
+
+        // Create new flight using the constructor order you specified
+        Flight newFlight(id, src, dest, datetime, ac, gate, runway, status, basePrice);
+
+        // Add to flight map
+        flightMap[id] = newFlight;
+
+        // Update aircraft status to 'assigned'
+        if (aircraftMap.find(ac) != aircraftMap.end()) {
+            aircraftMap[ac].avail = "assigned";
+        }
+
+        std::cout << "Successfully added flight: " << id << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error adding flight: " << e.what() << std::endl;
+        throw; // Re-throw to handle in the API endpoint
+    }
+}
+crow::json::wvalue ResourceManager::gatesAndRunways() {
+    crow::json::wvalue response;
+
+    crow::json::wvalue gatesJson;
+    for (const auto& [gateNo, flight] : gates) {
+        if (flight.id.empty()) {
+            gatesJson[std::to_string(gateNo)] = nullptr;
+        } else {
+            crow::json::wvalue flightJson;
+            flightJson["id"] = flight.id;
+            flightJson["src"] = flight.src;
+            flightJson["dest"] = flight.dest;
+            flightJson["datetime"] = flight.datetime;
+            flightJson["status"] = flight.status;
+            gatesJson[std::to_string(gateNo)] = std::move(flightJson);
+        }
+    }
+
+    crow::json::wvalue runwaysJson;
+    for (const auto& [runwayNo, flight] : runways) {
+        if (flight.id.empty()) {
+            runwaysJson[std::to_string(runwayNo)] = nullptr;
+        } else {
+            crow::json::wvalue flightJson;
+            flightJson["id"] = flight.id;
+            flightJson["src"] = flight.src;
+            flightJson["dest"] = flight.dest;
+            flightJson["datetime"] = flight.datetime;
+            flightJson["status"] = flight.status;
+            runwaysJson[std::to_string(runwayNo)] = std::move(flightJson);
+        }
+    }
+
+    response["gates"] = std::move(gatesJson);
+    response["runways"] = std::move(runwaysJson);
+    return response;
+}
