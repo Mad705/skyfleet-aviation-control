@@ -112,11 +112,7 @@ Below are screenshots showcasing various components of the SkyFleet system:
 
 ---
 
-## 📎 Report
 
-A detailed report outlining the problem statement, design approach, use cases, diagrams, and individual contributions can be found here: [`Report_Template.pdf`](./Report_Template.pdf)
-
----
 
 ## 📍 Getting Started
 
