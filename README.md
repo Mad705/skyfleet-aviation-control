@@ -80,22 +80,22 @@ By implementing an object-oriented approach and applying software engineering pr
 Below are screenshots showcasing various components of the SkyFleet system:
 
 ### 🔹 Flight Scheduling Interface
-![Flight Scheduling](screenshots/1.png)
+![Flight Scheduling](./front-end/screenshots/1.png)
 
 ### 🔹 Passenger & Ticket Booking Module
-![Passenger Ticketing](screenshots/2.png)
+![Passenger Ticketing](./front-end/screenshots/2.png)
 
 ### 🔹 Crew Assignment & Management
-![Crew Management](screenshots/3.png)
+![Crew Management](./front-end/screenshots/3.png)
 
 ### 🔹 Baggage Tracking Panel
-![Baggage Tracking](screenshots/4.png)
+![Baggage Tracking](./front-end/screenshots/4.png)
 
 ### 🔹 Aircraft Assignment and Maintenance
-![Aircraft Maintenance](screenshots/5.png)
+![Aircraft Maintenance](./front-end/screenshots/5.png)
 
 ### 🔹 Real-Time Flight Status Dashboard
-![Flight Status Dashboard](screenshots/6.png)
+![Flight Status Dashboard](./front-end/screenshots/6.png)
 
 > _📂 Place all images in the `/screenshots/` directory. Use `.png` format (or adjust extension in markdown accordingly)._
 
